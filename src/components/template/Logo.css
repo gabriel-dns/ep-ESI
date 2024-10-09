@@ -1,0 +1,20 @@
+aside.logo {
+    background-color: rgba(10, 105, 230, 0.911);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+aside.logo img {
+    padding: 0px 15px;
+    width: 100%;
+}
+aside h2{
+    color: #fff
+}
+
+@media(max-width: 576px) {
+    aside.logo img {
+        width: 350px;
+    }
+}
