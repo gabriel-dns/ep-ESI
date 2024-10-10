@@ -9,16 +9,59 @@ export default props =>
                  Início
             </Link>
             <Link to="/teacher">
-              Professores
-            </Link>
-            <Link to="/statisticPage">
-            Estatisticas
+              Relatorio
             </Link>
             <Link to="/login">
              Login
             </Link>
-            <Link to="/discipline">
-             Disciplinas
-            </Link>
         </nav>
     </aside>
+
+
+const navDefault = () => {
+    return (
+         <aside className="menu-area">
+        <nav className="menu">
+            <Link to="/">
+                 Início
+            </Link>
+            <Link to="/login">
+             Login
+            </Link>
+        </nav>
+    </aside>)
+}
+const navAluno = () => {
+    return (
+         <aside className="menu-area">
+        <nav className="menu">
+            <Link to="/">
+                 Início
+            </Link>
+            <Link to="/teacher">
+              Relatorio
+            </Link>
+            <Link to="/login">
+             Sair
+            </Link>
+        </nav>
+    </aside>)
+}
+
+const navOrientadorCCP = () => {
+    return (
+         <aside className="menu-area">
+        <nav className="menu">
+            <Link to="/">
+                 Início
+            </Link>
+            <Link to="/teacher">
+              Alunos
+            </Link>
+            <Link to="/login">
+             Sair
+            </Link>
+        </nav>
+    </aside>)
+}
+

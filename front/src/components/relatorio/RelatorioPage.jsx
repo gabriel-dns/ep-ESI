@@ -22,7 +22,7 @@ const initialState = {
 }
 
 
-export default class Teacher extends Component {
+export default class Relatorio extends Component {
     
 
     state = { ...initialState }

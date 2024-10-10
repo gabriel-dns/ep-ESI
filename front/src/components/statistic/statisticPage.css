@@ -1,7 +1,0 @@
-.media{
-background-color: brown;
-}
-
-.media:nth-child(2) {
-    background-color: rgb(46, 165, 42);
-    }

@@ -19,6 +19,7 @@ export default class UserServices {
 
       return true
     }
+
   }
   autenticacao () {
     var token = localStorage.getItem("token")
