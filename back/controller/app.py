@@ -16,7 +16,7 @@ def hello():
         return 'Hello World'
 
 
-@app.route('/api/login', methods=['GET'])
+@app.route('/api/login', methods=['POST'])
 def login():
       if not request.is_json:
             return jsonify({'erro': 'Request body must be JSON'}),400

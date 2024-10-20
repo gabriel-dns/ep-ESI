@@ -13,12 +13,24 @@ export default class AcademicServices {
       console.log("Chamada da tela por ORIENTADOR")
       orientador = localStorage.getItem("numeroUsp")
     }
+    console.log('NUMERO USP ORIENTADO: '+orientador)
     
-    const {data} = await api.get('/alunos', orientador)
+    const {data} = await api.get('/'+orientador+'/alunos', orientador)
+    var dadosAluno =  []
+    
     console.log("dados retorno: ")
     console.log(data)
 
-    return data
+    data.alunos.map(alu => {
+      dadosAluno.push({
+        "nome": alu.nome,
+        "numeroUsp": alu.nusp
+      })
+      
+    })
+
+
+    return dadosAluno
   }
 
   async getOrientadores(){
