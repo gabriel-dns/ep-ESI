@@ -4,22 +4,30 @@ export default class UserServices {
 
 
   async login (dados) {
-    const {data} = await api.get('/login', dados)
-    var response 
+
+     const requestJson = JSON.stringify(dados);
+
+    const {data} = await api.post('/login', requestJson)
+    var response = data
+    console.log('--------------TESTE RETORNO-------------')
+    console.log(data)
+
     //config Para testes locais com jsonServer
-    if(process.env.REACT_APP_AMBIENTE == 'dev'){
-       response = data.filter(lista => (lista.email == dados.email))
-       response =response[0]
-    }
+     if(process.env.REACT_APP_AMBIENTE == 'dev'){
+      console.log("DEV")
+        response = data.filter(lista => (lista.email == dados.email))
+        response =response[0]
+     }
 
-    if (data) {
-      localStorage.setItem("nome", response.nome)
-      localStorage.setItem("email", response.email)
-      localStorage.setItem("numeroUsp", response.numeroUsp)
-      localStorage.setItem("niveluser", response.nivelUser)
-
-    }
-    window.location.href = "/"
+     if (response.numero_usp != null) {
+       localStorage.setItem("email", response.email)
+       localStorage.setItem("numeroUsp", response.numero_usp)
+       localStorage.setItem("niveluser", response.nivel)
+       window.location.href = "/"
+     }else{
+       alert('Email ou senha Incorreto')
+     }
+ 
 
   }
   autenticacao () {
@@ -43,9 +51,9 @@ export default class UserServices {
 
 
   logout(){
-    localStorage.removeItem("nome")
     localStorage.removeItem("email")
     localStorage.removeItem("numeroUsp")
+    localStorage.removeItem("niveluser")
   
     
   }
