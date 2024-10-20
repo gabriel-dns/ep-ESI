@@ -118,9 +118,13 @@ const navCCP = () => {
             <Link to="/">
                  Início
             </Link>
-            <Link to="/relatorio">
+            <Link to="/orientadores">
               Orientadores
             </Link>
+            <Link to="/datamaxima">
+              Cadastro Data Maxima
+            </Link>
+            
             <b className="logout" onClick={() => encerrarSessao()}>
              Sair
             </b>

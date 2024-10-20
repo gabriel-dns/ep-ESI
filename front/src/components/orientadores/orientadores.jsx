@@ -20,24 +20,21 @@ const initialState = {
 }
 
 
-export default class Alunos extends Component {
+export default class Orientadores extends Component {
     
 
     state = { ...initialState }
 
    async componentWillMount() {
         util.autenticacao()
-        const urlParams = new URLSearchParams(window.location.search);
-        const numeroUspOrientador = urlParams.get('numerousp');
-        
-        var  alunosResponse = await academicServices.getAlunos(numeroUspOrientador)
-        console.log("Lista de Alunos" + alunosResponse)
-        this.setState({ list: alunosResponse })
+        var  orientadoresResponse = await academicServices.getOrientadores()
+        console.log("Lista de Alunos" + orientadoresResponse)
+        this.setState({ list: orientadoresResponse })
     }
 
-    consultaRelatorio(numeroUsp){
+    consultarAlunos(numeroUsp){
         console.log("Numero usp: " + numeroUsp)
-        window.location.href = "/relatorio?numerousp="+numeroUsp
+        window.location.href = "/alunos?numerousp="+numeroUsp
 
     }
 
@@ -77,7 +74,7 @@ export default class Alunos extends Component {
                 {/* <td> <img style={styles}  src={curriculo}/>  </td> */}
                     <td>
                         <button className="btn btn-warning"
-                            onClick={() => this.consultaRelatorio(user.numeroUsp)}>
+                            onClick={() => this.consultarAlunos(user.numeroUsp)}>
                             <i className="fa fa-pencil"></i>
                         </button>
                     </td>
