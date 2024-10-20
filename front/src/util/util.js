@@ -5,16 +5,40 @@ export default class Util {
 
 
   autenticacao () {
-    var token = localStorage.getItem("token")
-    var autenticado = localStorage.getItem("token") != 852 ? true : false
-    console.log("Conteudo token")
-    console.log(token)
-    console.log("Teste token")
+    var numeroUsp = localStorage.getItem("numeroUsp")
+    var autenticado = localStorage.getItem("numeroUsp") != null ? true : false
+    console.log("Conteudo numeroUsp")
+    console.log(numeroUsp)
+    console.log("Teste numeroUsp")
     console.log(autenticado)
 
     !autenticado ? window.location.href = "/": false
   
   }
 
+  controleDeAcesso(){
+    var nivelUsuario = localStorage.getItem("niveluser")
+    switch(nivelUsuario){
+      case 'A':
+        return 'aluno'
+      case 'O':
+        return 'orientador'
+      case 'C':
+        return 'CCP'
+    }
+
+
+  }
+
+  logout(){
+    console.log('LOGOUT')
+    localStorage.removeItem("nome")
+    localStorage.removeItem("email")
+    localStorage.removeItem("numeroUsp")
+    localStorage.removeItem("niveluser")
+    window.location.href = "/"
+    window.location.reload()
+    
+  }
 
 }
