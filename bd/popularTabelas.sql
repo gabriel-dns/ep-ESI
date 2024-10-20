@@ -30,10 +30,10 @@ INSERT INTO DISCIPLINAS (NUMERO_USP, NOME, NOTA) VALUES
 (300004, 'Estatística Aplicada', 7.5);
 
 -- Inserindo dados na tabela RELATORIO_ALUNO
-INSERT INTO RELATORIO_ALUNO (NUMERO_USP, RESULTADO_AVALIACAO, PRAZO_EXAME_QUALIFICACAO, PRAZO_ENTREGA_DISSERTACAO, ATIVIDADES_ACADEMICAS, RESUMO_ATIVIDADES, OBSERVACOES, DIFICULDADE_ORIENTADOR) VALUES
-(300001, 'ADEQUADO', '2022-05-10', '2023-12-15', 'Aulas, pesquisa e seminários', 'Atividades realizadas com sucesso', 'Nenhuma', 'Nenhuma'),
-(300002, 'ADEQUADO COM RESSALVAS', '2021-06-15', '2023-11-20', 'Publicação de artigos, seminários', 'Algumas dificuldades encontradas', 'Recomenda-se maior acompanhamento', 'Comunicação insuficiente'),
-(300003, 'INSATISFATÓRIO', NULL, '2024-04-30', 'Apenas atividades de campo', 'Pouca participação em seminários', 'Desempenho abaixo do esperado', 'Falta de feedback');
+INSERT INTO RELATORIO_ALUNO (NUMERO_USP, ID_RELATORIO, DATA_ENVIO, PRAZO_EXAME_QUALIFICACAO, PRAZO_ENTREGA_DISSERTACAO, ATIVIDADES_ACADEMICAS, RESUMO_ATIVIDADES, OBSERVACOES, DIFICULDADE_ORIENTADOR) VALUES
+(300001, 'ASD212ASASZXCSAC' , '2022-1-2 15:10:26' ,'2022-05-10', '2023-12-15', 'Aulas, pesquisa e seminários', 'Atividades realizadas com sucesso', 'Nenhuma', 'Nenhuma'),
+(300002, 'SKAPOCKAPSKQW12AZ', '2022-3-1 17:17:55' ,'2021-06-15', '2023-11-20', 'Publicação de artigos, seminários', 'Algumas dificuldades encontradas', 'Recomenda-se maior acompanhamento', 'Comunicação insuficiente'),
+(300003, 'SAKOPKXZLCKPO12K' , '2022-3-27 09:13:43' ,NULL, '2024-04-30', 'Apenas atividades de campo', 'Pouca participação em seminários', 'Desempenho abaixo do esperado', 'Falta de feedback');
 
 -- Inserindo dados na tabela LATTES
 INSERT INTO LATTES (NUMERO_USP, LINK, DATA_ULTIMA_ATUALIZACAO) VALUES
