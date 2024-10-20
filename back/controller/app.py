@@ -1,4 +1,5 @@
 from flask import Flask, jsonify, request
+from flask_cors import CORS
 from model.usuario_model import getLogin
 from model.aluno_model import getAlunosPorDocente
 from model.docente_model import getDocente
@@ -8,6 +9,7 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 #from entities import usuario
 
 app = Flask(__name__)
+CORS(app)
 
 @app.route('/api')
 def hello():
