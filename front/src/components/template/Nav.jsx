@@ -1,26 +1,69 @@
 import './Nav.css'
-import React from 'react'
+import React, { Component, useState  } from 'react'
 import { Link } from 'react-router-dom'
+import Util from '../../util/util';
 
-export default props =>
-    <aside className="menu-area">
-        <nav className="menu">
-            <Link to="/">
-                 Início
-            </Link>
-            <Link to="/teacher">
-              Relatorio
-            </Link>
-            <Link to="/login">
-             Login
-            </Link>
-        </nav>
-    </aside>
+const util = new Util();
+
+const initialState = {
+    dadosMenu: { usuario: '', listaMenu: '' }
+}
+
+function encerrarSessao(){
+    console.log("chegou aqui")
+    util.logout();
+}
+
+export default class Menu extends Component {
+
+    state = { ...initialState }
+
+
+
+    componentWillMount() {
+      var tipoUsuario =  util.controleDeAcesso()
+      console.log("Tipo usuario:")
+      console.log(tipoUsuario)
+    
+
+      var menuComponent 
+      switch(tipoUsuario){
+        case 'aluno':
+            menuComponent = navAluno()
+          break
+        case 'orientador':
+            menuComponent = navOrientador()
+            break
+        case 'CCP':
+            menuComponent = navCCP()
+            break
+        default:
+            menuComponent = navDefault()
+            
+      }
+      this.setState(initialState.dadosMenu.listaMenu = menuComponent)
+
+
+
+        //window.location.href = "/";
+    }
+
+    render() {
+        return (
+            <aside className="menu-area">
+                { this.state.dadosMenu.listaMenu}
+           
+        </aside>
+        )
+    }
+   
+}
+ 
 
 
 const navDefault = () => {
     return (
-         <aside className="menu-area">
+       
         <nav className="menu">
             <Link to="/">
                  Início
@@ -28,40 +71,60 @@ const navDefault = () => {
             <Link to="/login">
              Login
             </Link>
+          
         </nav>
-    </aside>)
+  
+    
+)
 }
 const navAluno = () => {
     return (
-         <aside className="menu-area">
+       
         <nav className="menu">
             <Link to="/">
                  Início
             </Link>
-            <Link to="/teacher">
+            <Link to="/relatorio">
               Relatorio
             </Link>
-            <Link to="/login">
+            <b className="logout" onClick={() => encerrarSessao()}>
              Sair
-            </Link>
+            </b>
+            
         </nav>
-    </aside>)
+ )
 }
 
-const navOrientadorCCP = () => {
+const navOrientador = () => {
     return (
-         <aside className="menu-area">
+        
         <nav className="menu">
             <Link to="/">
                  Início
             </Link>
-            <Link to="/teacher">
+            <Link to="/alunos">
               Alunos
             </Link>
-            <Link to="/login">
+            <b className="logout" onClick={() => encerrarSessao()}>
              Sair
-            </Link>
+            </b>
         </nav>
-    </aside>)
+  )
+}
+const navCCP = () => {
+    return (
+      
+        <nav className="menu">
+            <Link to="/">
+                 Início
+            </Link>
+            <Link to="/relatorio">
+              Orientadores
+            </Link>
+            <b className="logout" onClick={() => encerrarSessao()}>
+             Sair
+            </b>
+        </nav>
+   )
 }
 
