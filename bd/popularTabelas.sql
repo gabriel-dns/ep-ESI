@@ -14,7 +14,8 @@ INSERT INTO DOCENTE (NUMERO_USP, NOME, CARGO) VALUES
 INSERT INTO ALUNO (NUMERO_USP, NOME_COMPLETO, EMAIL, DATA_NASCIMENTO, LOCAL_NASCIMENTO, NACIONALIDADE, CURSO, ORIENTADOR, LINK_LATTES, DATA_MATRICULA, DATA_QUALIFICACAO, DATA_PROFICIENCIA, DATA_LIMITE_TRABALHO_FINAL) VALUES
 (300001, 'Carlos Souza', 'carlos.souza@usp.br', '1990-05-12', 'São Paulo', 'Brasileira', 'Mestrado', 200001, 'http://lattes.carlos.com', '2020-02-15', '2022-05-10', '2021-08-10', '2023-12-15'),
 (300002, 'Fernanda Lima', 'fernanda.lima@usp.br', '1992-07-22', 'Campinas', 'Brasileira', 'Doutorado', 200002, 'http://lattes.fernanda.com', '2019-03-10', '2021-06-15', '2020-09-12', '2023-11-20'),
-(300003, 'Marcelo Alves', 'marcelo.alves@usp.br', '1991-01-30', 'Rio de Janeiro', 'Brasileira', 'Mestrado', 200003, 'http://lattes.marcelo.com', '2021-04-22', NULL, NULL, '2024-04-30');
+(300003, 'Marcelo Alves', 'marcelo.alves@usp.br', '1991-01-30', 'Rio de Janeiro', 'Brasileira', 'Mestrado', 200003, 'http://lattes.marcelo.com', '2021-04-22', NULL, NULL, '2024-04-30'),
+(12549866865, 'Kennedy', 'marcelo.alves@usp.br', '1991-01-30', 'Rio de Janeiro', 'Brasileira', 'Mestrado', 200003, 'http://lattes.marcelo.com', '2021-04-22', NULL, NULL, '2024-04-30');
 
 -- Inserindo dados na tabela CRITERIOS --DEU ERRO
 INSERT INTO CRITERIOS (NUMERO_USP, CREDITOS, SEMESTRE, MATRICULA_QUALIFICACAO, APROVADO_QUALIFICACAO, MATRICULA_PROFICIENCIA, APROVADO_PROFICIENCIA) VALUES
@@ -30,10 +31,10 @@ INSERT INTO DISCIPLINAS (NUMERO_USP, NOME, NOTA) VALUES
 (300004, 'Estatística Aplicada', 7.5);
 
 -- Inserindo dados na tabela RELATORIO_ALUNO
-INSERT INTO RELATORIO_ALUNO (NUMERO_USP, RESULTADO_AVALIACAO, PRAZO_EXAME_QUALIFICACAO, PRAZO_ENTREGA_DISSERTACAO, ATIVIDADES_ACADEMICAS, RESUMO_ATIVIDADES, OBSERVACOES, DIFICULDADE_ORIENTADOR) VALUES
-(300001, 'ADEQUADO', '2022-05-10', '2023-12-15', 'Aulas, pesquisa e seminários', 'Atividades realizadas com sucesso', 'Nenhuma', 'Nenhuma'),
-(300002, 'ADEQUADO COM RESSALVAS', '2021-06-15', '2023-11-20', 'Publicação de artigos, seminários', 'Algumas dificuldades encontradas', 'Recomenda-se maior acompanhamento', 'Comunicação insuficiente'),
-(300003, 'INSATISFATÓRIO', NULL, '2024-04-30', 'Apenas atividades de campo', 'Pouca participação em seminários', 'Desempenho abaixo do esperado', 'Falta de feedback');
+INSERT INTO RELATORIO_ALUNO (NUMERO_USP, ID_RELATORIO, DATA_ENVIO, PRAZO_EXAME_QUALIFICACAO, PRAZO_ENTREGA_DISSERTACAO, ATIVIDADES_ACADEMICAS, RESUMO_ATIVIDADES, OBSERVACOES, DIFICULDADE_ORIENTADOR) VALUES
+(300001, 'ASD212ASASZXCSAC' , '2022-1-2 15:10:26' ,'2022-05-10', '2023-12-15', 'Aulas, pesquisa e seminários', 'Atividades realizadas com sucesso', 'Nenhuma', 'Nenhuma'),
+(300002, 'SKAPOCKAPSKQW12AZ', '2022-3-1 17:17:55' ,'2021-06-15', '2023-11-20', 'Publicação de artigos, seminários', 'Algumas dificuldades encontradas', 'Recomenda-se maior acompanhamento', 'Comunicação insuficiente'),
+(300003, 'SAKOPKXZLCKPO12K' , '2022-3-27 09:13:43' ,NULL, '2024-04-30', 'Apenas atividades de campo', 'Pouca participação em seminários', 'Desempenho abaixo do esperado', 'Falta de feedback');
 
 -- Inserindo dados na tabela LATTES
 INSERT INTO LATTES (NUMERO_USP, LINK, DATA_ULTIMA_ATUALIZACAO) VALUES

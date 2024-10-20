@@ -81,5 +81,21 @@ def getAlunosDocente(nusp_docente):
       
 
 
+@app.route('/send_report_email', methods=['POST'])
+def send_email():
+      data = request.get_json()
+      sender = data['sender']
+      subject = data['subject']
+      recipients = data['recipients']
+      message = data['message']
+      deadline = data['deadline']
+      link = "https://docs.google.com/forms/d/e/1FAIpQLSeawsatuMAXsM-_qjnpl8jl1optdKuf1RFqK_pv5giadxYXaw/viewform?usp=sf_link"
+
+      from back import envia_email
+
+      envia_email.Email.envia_email(subject, sender, recipients, deadline, link)
+
+      return f"Email has been sent!"
+
 if __name__ == "__main__":
     app.run(debug=True)
