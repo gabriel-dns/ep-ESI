@@ -15,27 +15,39 @@ export default class UserServices {
     if (data) {
       localStorage.setItem("nome", response.nome)
       localStorage.setItem("email", response.email)
-      localStorage.setItem("token", response.token)
+      localStorage.setItem("numeroUsp", response.numeroUsp)
+      localStorage.setItem("niveluser", response.nivelUser)
 
-      return true
     }
+    window.location.href = "/"
 
   }
   autenticacao () {
-    var token = localStorage.getItem("token")
-    var retorno = localStorage.getItem("token") != 852 ? true : false
-    console.log("Conteudo token")
-    console.log(token)
-    console.log("Teste token")
+    var numeroUsp = localStorage.getItem("numeroUsp")
+    var retorno = localStorage.getItem("numeroUsp") != null ? true : false
+    console.log("Conteudo numeroUsp")
+    console.log(numeroUsp)
+    console.log("Teste numeroUsp")
     console.log(retorno)
     return retorno
   }
 
 
   testeValores () {
-    var testeValor = localStorage.getItem("token")
+    var testeValor = localStorage.getItem("niveluser")
+    console.log("testando valores:")
     console.log(testeValor)
 
+  }
+
+
+
+  logout(){
+    localStorage.removeItem("nome")
+    localStorage.removeItem("email")
+    localStorage.removeItem("numeroUsp")
+  
+    
   }
 
 
