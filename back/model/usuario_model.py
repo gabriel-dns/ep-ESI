@@ -1,5 +1,5 @@
 from model.db_connection import get_db_connection
-from entities.user import User
+from entities.usuario import Usuario
 import base64
 
 def getLogin(email,senha):
@@ -16,15 +16,15 @@ def getLogin(email,senha):
         cursor.execute(query)
         result = cursor.fetchone()
         
-        user_instance = User(nusp=result[0], email=result[1], nivel=result[2], senha=senha)
-        print(f"Instância de User criada: {user_instance}")
+        
         cursor.close()
         conn.close()
-        if result:
-            return user_instance
-        
+
         if result is None:
             return None
+        
+        if result:
+            return Usuario(nusp=result[0], email=result[1], nivel=result[2], senha=senha)
 
     except Exception as e:
-        return
+        return e
