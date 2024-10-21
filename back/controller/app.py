@@ -78,7 +78,7 @@ def getAlunosDocente(nusp_docente):
         return jsonify({"message": "Erro interno do servidor"}), 500
       
 
-@app.route('/api/aluno/dados', methods=['POST'])
+@app.route('/api/aluno/dados', methods=['GET'])
 def get_aluno_dados():
     numero_usp = request.args.get('numero_usp')
     if not numero_usp:
