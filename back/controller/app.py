@@ -81,6 +81,8 @@ def getAlunosDocente(nusp_docente):
 @app.route('/api/aluno/dados', methods=['POST'])
 def get_aluno_dados():
     numero_usp = request.args.get('numero_usp')
+
+    print(numero_usp)
     if not numero_usp:
         return jsonify({"error": "NUMERO_USP is required"}), 400
 

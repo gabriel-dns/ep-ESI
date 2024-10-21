@@ -54,11 +54,11 @@ export default class AcademicServices {
       aluno = localStorage.getItem("numeroUsp")
     }
 
-    const {data} = await api.get('/dados', numeroUsp)
-    console.log("getdadosAlunos dados retorno: ")
+    const {data} = await api.post('/aluno/dados?numero_usp=' + numeroUsp)
+    console.log("get dadosAlunos dados retorno: ")
     console.log(data)
 
-    return data
+    return data.dados
   
   }
   async cadastrarDataMaxima(dataMaxima){
