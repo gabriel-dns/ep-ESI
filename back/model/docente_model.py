@@ -1,45 +1,29 @@
 from back.model.db_connection import get_db_connection
-from back.entities.user import User
-import base64
-from functools import wraps
+from back.entities.docente import Docente
 
-def validaConnection(f):
-    @wraps(f)
-    def wrapper(*args, **kwargs):
-        conn = get_db_connection()
-        if conn is None:
-            print("Erro: Conexão com o banco de dados não estabelecida.")
-            return None
-        return f(conn, *args, **kwargs)
-    return wrapper
-
-def getLogin(email, senha):
+def getDocente(nusp_docente):
     conn = get_db_connection()
     if conn is None:
         return None
     
-    #senhaEncoded = base64.b64encode(senha)
     try:
         cursor = conn.cursor()
-        
-        #query = "SELECT numero_usp, email, senha, nivel FROM usuarios WHERE email like '{}' and SENHA like '{}'".format(email,senha)
-        query = "select numero_usp, email, nivel from usuarios where email = '{}' and senha = '{}'".format(email, senha)
+        query = "select numero_usp, nome, cargo from docente where numero_usp = '{}'".format(nusp_docente)
         cursor.execute(query)
         result = cursor.fetchone()
-        
-        user_instance = User(nusp=result[0], email=result[1], nivel=result[2], senha=senha)
-        print(f"Instância de User criada: {user_instance}")
+
         cursor.close()
         conn.close()
-        if result:
-            return user_instance
+        print(result)
         
         if result is None:
             return None
-
+        
+        if result:
+            return Docente(nusp=result[0], nome=result[1], cargo=result[2])
+    
     except Exception as e:
-        print('Falha ao executar query')
-        return str(e)
+        return e
 
 def getProfessores():
     conn = get_db_connection()
@@ -71,7 +55,6 @@ def getProfessores():
     except Exception as e:
         print('Falha ao executar query')
         return str(e)
-
 
 def postDataMax(dataMax):
     conn = get_db_connection()

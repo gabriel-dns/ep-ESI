@@ -5,7 +5,7 @@ aside.menu-area {
         2px 0 15px 0 rgba(0, 0, 0, 0.09);
 }
 
-.menu a {
+.menu a, .menu b {
     display: block;
     text-decoration: none;
     color: #FFF;
@@ -13,10 +13,14 @@ aside.menu-area {
     padding: 10px;
 }
 
-.menu a:hover {
+.menu a:hover, .menu b:hover  {
     background: linear-gradient(135deg, #07a7e3 0%, #32dac3 100%);
 }
 
+.logout{
+    color: #ffffff;
+    
+}
 @media(max-width: 768px) {
     .menu {
         display: flex;

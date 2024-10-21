@@ -1,25 +1,69 @@
 import React, { Component } from 'react'
-import axios from 'axios'
+import './RelatorioPage.css'
 import Main from '../template/Main'
-import curriculo from './curriculo.png'
-import api from '../../services/api'
+import AcademicServices from '../../services/AcademicServices'
 import Util from '../../util/util';
 
 const util = new Util();
-
+const academicServices = new AcademicServices()
 
 
 const headerProps = {
     icon: '',
-    title: 'Professores',
-    subtitle: 'Tela de Listagem, cadastro e edição de professores'
+    title: 'RESULTADOS',
+    subtitle: 'Tela de resultados e relatorio'
 }
 
-const baseUrl = 'http://localhost:3001/teacher'
 const initialState = {
     user: { name: '', email: '' },
-    list: []
+    list: [],
+    dados: {
+
+   
+    parecer: {
+        orientador: null, 
+        aluno: null, 
+        textoParecer: '', 
+        desempenho: '', 
+        ehCcp: false,
+        resultado: '' 
+    },
+
+    lattes: {
+        numeroUsp: null, 
+        link: '', 
+        dataUltimaAtualizacao: null 
+    },
+
+    relatorioAluno: {
+        numeroUsp: null, 
+        resultadoAvaliacao: '', 
+        prazoExameQualificacao: null, 
+        prazoEntregaDissertacao: null, 
+        atividadesAcademicas: '', 
+        resumoAtividades: '', 
+        observacoes: '', 
+        dificuldadeOrientador: '' 
+    },
+
+    disciplinas: [],
+
+    aluno: {
+        numeroUsp: null, 
+        nomeCompleto: '', 
+        email: '',
+        dataNascimento: null, 
+        localNascimento: '', 
+        nacionalidade: '', 
+        curso: '', 
+        orientador: null, 
+        dataMatricula: null,
+        dataQualificacao: null, 
+        dataProficiencia: null, 
+        dataLimiteTrabalhoFinal: null 
+    }
 }
+};
 
 
 export default class Relatorio extends Component {
@@ -27,143 +71,97 @@ export default class Relatorio extends Component {
 
     state = { ...initialState }
 
-    componentWillMount() {
+    async componentWillMount() {
         util.autenticacao()
+        const urlParams = new URLSearchParams(window.location.search);
+        const numeroUsp = urlParams.get('numerousp');
+        var response = await academicServices.getdadosAlunos(numeroUsp);
+
+        this.setState({ dados: response })
+
+
+
+
+        //console.log("PAGINA RELATORIO numeroUsp: " + numeroUsp)
+
+
+
         //window.location.href = "/";
     }
 
-    clear() {
-        this.setState({ user: initialState.user })
-    }
-
-    save() {
-        const user = this.state.user
-        const method = user.id ? 'put' : 'post'
-        const url = user.id ? `${baseUrl}/${user.id}` : baseUrl
-        api[method](url, user)
-            .then(resp => {
-                const list = this.getUpdatedList(resp.data)
-                this.setState({ user: initialState.user, list })
-            })
-    }
-
-    getUpdatedList(user, add = true) {
-        const list = this.state.list.filter(u => u.id !== user.id)
-        if(add) list.unshift(user)
-        return list
-    }
-
-    updateField(event) {
-        const user = { ...this.state.user }
-        user[event.target.name] = event.target.value
-        this.setState({ user })
-    }
-
-    renderForm() {
-        return (
-            <div className="form">
-                <div className="row">
-                    <div className="col-12 col-md-6">
-                        <div className="form-group">
-                            <label>Nome</label>
-                            <input type="text" className="form-control"
-                                name="name"
-                                value={this.state.user.name}
-                                onChange={e => this.updateField(e)}
-                                placeholder="Digite o nome..." />
-                        </div>
-                    </div>
-
-                    <div className="col-12 col-md-6">
-                        <div className="form-group">
-                            <label>E-mail</label>
-                            <input type="text" className="form-control"
-                                name="email"
-                                value={this.state.user.email}
-                                onChange={e => this.updateField(e)}
-                                placeholder="Digite o e-mail..." />
-                        </div>
-                    </div>
-                </div>
-
-                <hr />
-                <div className="row">
-                    <div className="col-12 d-flex justify-content-end">
-                        <button className="btn btn-primary"
-                            onClick={e => this.save(e)}>
-                            Cadastrar
-                        </button>
-
-                        <button className="btn btn-secondary ml-2"
-                            onClick={e => this.clear(e)}>
-                            Cancelar
-                        </button>
-                    </div>
-                </div>
-            </div>
-        )
-    }
-
-    load(user) {
-        this.setState({ user })
-    }
-
-    remove(user) {
-        axios.delete(`${baseUrl}/${user.id}`).then(resp => {
-            const list = this.getUpdatedList(user, false)
-            this.setState({ list })
-        })
-    }
-
     renderTable() {
+        const { parecer, lattes, relatorioAluno, disciplinas, aluno } = this.state.dados;
+    
         return (
-            <table className="table mt-4">
-                <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>Nome</th>
-                        <th>E-mail</th>
-                        <th>More</th>
-                        <th>Editar/Apagar</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {this.renderRows()}
-                </tbody>
-            </table>
-        )
-    }
+            <div>
+                <div className='blocoInformacao'>
+                <h2>Dados Aluno</h2>
+                <label>Número USP: <spam>{aluno.numeroUsp}</spam></label><br />
+                <label>Nome Completo: <spam>{aluno.nomeCompleto}</spam></label><br />
+                <label>Email: <spam>{aluno.email}</spam></label><br />
+                <label>Curso: <spam>{aluno.curso}</spam></label><br />
+                <label>Orientador: <spam>{aluno.orientador}</spam></label><br/>
+                <label>Data de Matrícula: <spam>{aluno.dataMatricula}</spam></label><br />
+                <label>Realizaçao Qualificação: <spam>{aluno.dataQualificacao}</spam></label><br />
+                <label>Realizaçao Proficiência: <spam>{aluno.dataProficiencia}</spam></label><br />
+                <label>Data Limite para Trabalho Final: <spam>{aluno.dataLimiteTrabalhoFinal}</spam></label><br />
+                </div>
 
-    renderRows() {
-        return this.state.list.map(user => {
-            let styles = {
-                width: '35px'
-              };
-            return (
-                <tr key={user.id}>
-                    <td>{user.id}</td>
-                    <td>{user.name}</td>
-                    <td>{user.email}</td>
-                <td> <img style={styles}  src={curriculo}/>  </td>
-                    <td>
-                        <button className="btn btn-warning"
-                            onClick={() => this.load(user)}>
-                            <i className="fa fa-pencil"></i>
-                        </button>
-                        <button className="btn btn-danger ml-2"
-                            onClick={() => this.remove(user)}>
-                            <i className="fa fa-trash"></i>
-                        </button>
-                    </td>
-                </tr>
-            )
-        })
-    }
+
+                <div className='blocoInformacao'>
+                <h2>Lattes</h2>
+                <label>Link: <spam>{lattes.link}</spam></label><br />
+                <label>Última Atualização: <spam>{lattes.dataUltimaAtualizacao}</spam></label><br />
+                </div>
+
+                <div className='blocoInformacao'>
+                <h2>Relatório Aluno</h2>
+                <label>Resultado Avaliação: <spam>{relatorioAluno.resultadoAvaliacao ? null: "pendente" }</spam></label><br />
+                <label>Prazo Exame Qualificação: <spam>{relatorioAluno.prazoExameQualificacao}</spam></label><br />
+                <label>Prazo Entrega Dissertação: <spam>{relatorioAluno.prazoEntregaDissertacao}</spam></label><br />
+                <label>Atividades Acadêmicas: <spam>{relatorioAluno.atividadesAcademicas}</spam></label><br />
+                <label>Resumo Atividades: <spam>{relatorioAluno.resumoAtividades}</spam></label><br />
+                <label>Observações: <spam>{relatorioAluno.observacoes}</spam></label><br />
+                <label>Dificuldade com Orientador: <spam>{relatorioAluno.dificuldadeOrientador}</spam></label><br />
+                </div>
+
+                <div className='blocoInformacao'>
+                <h2>Disciplinas</h2>
+                {disciplinas.map(materia =>{
+                 return(  
+                 <div>
+                <label>Nome: <spam>{materia.nome}</spam></label><br />
+                <label>Nota: <spam>{materia.nota}</spam></label><br />
+                 
+                 
+                 </div>)
+                })}
+                
+                </div>
+
+
+                <div className='blocoInformacao'>
+                <h2>Parecer</h2>
+                <label>Orientador:  <spam>{parecer.orientador}</spam></label><br />
+                <label>Aluno:  <spam>{parecer.aluno}</spam></label><br />
+                <label>Texto Parecer:  <spam>{parecer.textoParecer}</spam></label><br />
+                <label>Desempenho:  <spam>{parecer.desempenho}</spam></label><br />
+                <label>Resultado:  <spam>{parecer.resultado}</spam></label><br />
+                </div>
+                <div className='blocoInformacao'>
+                <h2>Avaliacao</h2>
+                </div>
+
+            </div>
+        );
+    };
+
+
     
     render() {
         return (
             <Main {...headerProps}>
-                {this.renderForm()}
+
                 {this.renderTable()}
             </Main>
         )

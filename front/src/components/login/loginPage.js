@@ -16,7 +16,7 @@ const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 
  const initialState = {
-    user: { senha: '', email: '', token: ' '},
+    user: { email: '', senha: '' },
     validators: { mailError : '', passErrors: ' ' }
 }
 

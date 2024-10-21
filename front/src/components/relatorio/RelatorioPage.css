@@ -1,0 +1,11 @@
+.blocoInformacao{
+    box-shadow: var(--shadow);
+    padding: 2%;
+    margin-bottom: 3%; 
+}
+label{
+    font-weight: bold;
+}
+spam{
+    font-weight: 300;
+}

@@ -1,4 +1,4 @@
-class User():
+class Usuario():
     def __init__(self, nusp, email, senha, nivel):
         self.nusp = nusp
         self.email = email
