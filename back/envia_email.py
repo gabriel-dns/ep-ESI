@@ -16,6 +16,7 @@ class Email():
         # subject, sender, recipients, deadline, link = trata_json(json)
 
         message = f"Olá aluno você está recebendo esta mensagem pois foi liberado o formulário a ser preenchido até a data de {deadline}.\nVocê consegue preencher o formulário de avaliação do semestre de pós-graduação clicando nesse link: {link}"
+        print(message)
 
 
         # Criando a mensagem MIME com codificação UTF-8

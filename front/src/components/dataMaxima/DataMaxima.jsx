@@ -29,16 +29,21 @@ export default class DataMaxima extends Component {
         util.autenticacao()
         const urlParams = new URLSearchParams(window.location.search);
         const numeroUsp = urlParams.get('numerousp');
+
+
+
     }
 
-    cadastrarData(dataMaxima){
-       var response = academicServices.cadastrarDataMaxima();
+    cadastrarData(){
+       console.log(this.state.dados.dataMaxima)
+       var response = academicServices.cadastrarDataMaxima(this.state.dados.dataMaxima);
 
-       if(response.sucesso){
-        alert('Data cadastrada com sucesso')
-       }else{
-        alert('Erro ao cadastrar')
-       }
+       alert("Data maxima de entrega cadastrada com sucesso! todos os alunos foram notificados")
+    //    if(response.sucesso){
+    //     alert('Data cadastrada com sucesso')
+    //    }else{
+    //     alert('Erro ao cadastrar')
+    //    }
       
     }
 
@@ -73,7 +78,7 @@ export default class DataMaxima extends Component {
                 <div className="row">
                     <div className="col-12 d-flex justify-content-end">
                         <button className="btn btn-primary"
-                            onClick={e => this.cadastrarData(e)}>
+                            onClick={() => this.cadastrarData()}>
                             Cadastrar
                         </button>
                         <button className="btn btn-secondary ml-2"
