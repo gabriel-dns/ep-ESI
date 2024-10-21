@@ -1,8 +1,19 @@
-from model.db_connection import get_db_connection
-from entities.user import User
+from back.model.db_connection import get_db_connection
+from back.entities.user import User
 import base64
+from functools import wraps
 
-def getLogin(email,senha):
+def validaConnection(f):
+    @wraps(f)
+    def wrapper(*args, **kwargs):
+        conn = get_db_connection()
+        if conn is None:
+            print("Erro: Conexão com o banco de dados não estabelecida.")
+            return None
+        return f(conn, *args, **kwargs)
+    return wrapper
+
+def getLogin(email, senha):
     conn = get_db_connection()
     if conn is None:
         return None
@@ -27,4 +38,59 @@ def getLogin(email,senha):
             return None
 
     except Exception as e:
-        return
+        print('Falha ao executar query')
+        return str(e)
+
+def getProfessores():
+    conn = get_db_connection()
+    if conn is None:
+        return None
+
+    try:
+        cursor = conn.cursor()
+
+        query = '''SELECT * FROM DOCENTE'''
+        cursor.execute(query)
+
+        resultRows = cursor.fetchall()
+
+        cursor.close()
+        conn.close()
+
+        docentes = []
+
+        if resultRows is not None:
+            for row in resultRows:
+                docentes.append({
+                    'nusp': row[0],
+                    'nome-professor': row[1]
+                })
+
+        return docentes
+
+    except Exception as e:
+        print('Falha ao executar query')
+        return str(e)
+
+
+def postDataMax(dataMax):
+    conn = get_db_connection()
+    if conn is None:
+        return None
+
+    try:
+        cursor = conn.cursor()
+
+        query = f"UPDATE ALUNO SET data_limite_trabalho_final = '{dataMax}';"
+        cursor.execute(query)
+
+        result = True if cursor.rowcount > 0 else False
+
+        conn.commit()
+        cursor.close()
+        conn.close()
+
+        return result
+
+    except Exception as e:
+        return str(e)
