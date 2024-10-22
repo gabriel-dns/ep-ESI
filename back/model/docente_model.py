@@ -1,5 +1,5 @@
-from back.model.db_connection import get_db_connection
-from back.entities.docente import Docente
+from model.db_connection import get_db_connection
+from entities.docente import Docente
 
 def getDocente(nusp_docente):
     conn = get_db_connection()

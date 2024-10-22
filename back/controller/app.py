@@ -1,15 +1,13 @@
 from flask import Flask, jsonify, request
-#<<<<<<< HEAD
-#from back.model.user_model import *
-#=======
 from flask_cors import CORS
 from model.usuario_model import getLogin
-from model.aluno_model import getAlunosPorDocente, query_aluno_dados, get
+from model.aluno_model import getAlunosPorDocente, query_aluno_dados, getAluno
 from model.docente_model import getDocente, getProfessores, postDataMax
+from model.parecer_model import insertParecer
 import sys
 import os
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
-#from entities import usuario
+
 
 app = Flask(__name__)
 CORS(app)
@@ -19,7 +17,7 @@ def hello():
         return 'Hello World'
 
 
-@app.route('/api/login', methods=['POST'])
+@app.route('/api/login', methods=['GET'])
 def login():
       if not request.is_json:
             return jsonify({'erro': 'Request body must be JSON'}),400
