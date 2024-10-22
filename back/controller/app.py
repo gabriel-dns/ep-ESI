@@ -1,8 +1,9 @@
 from flask import Flask, jsonify, request
 from flask_cors import CORS
 from model.usuario_model import getLogin
-from model.aluno_model import getAlunosPorDocente, query_aluno_dados
+from model.aluno_model import getAlunosPorDocente, getAluno, query_aluno_dados
 from model.docente_model import getDocente
+from model.parecer_model import insertParecer
 import sys
 import os
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
@@ -154,7 +155,41 @@ def send_email():
 
       return f"Email has been sent!"    
       
-
+@app.route('/api/parecer', methods=['POST'])
+def postParecer():
+      if not request.is_json:
+            return jsonify({'message': 'Request body must be JSON'}),400
+      data = request.get_json()
+      if 'orientador' not in data:
+            return jsonify({'message': 'Bad Request. The field "orientador" is requerid'}),400
+      if 'aluno' not in data:
+            return jsonify({'message': 'Bad Request. The field "aluno" is requerid'}),400
+      if 'justificativa' not in data:
+            return jsonify({'message': 'Bad Request. The field "justificativa" is requerid'}),400
+      if 'desempenho' not in data:
+            return jsonify({'message': 'Bad Request. The field "desempenho" is requerid'}),400
+      if 'EH_CCP' not in data:
+            return jsonify({'message': 'Bad Request. The field "EH_CCP" is requerid'}),400
+      if 'resultado' not in data:
+            return jsonify({'message': 'Bad Request. The field "resultado" is requerid'}),400
+      
+      orientador = getDocente(data['orientador'])
+      if orientador is None:
+            return jsonify({"message": "Professor not found"}), 404
+      aluno = getAluno(data['aluno'])
+      if aluno is None:
+            return jsonify({"message": "Student not found"}), 404
+      parecer = insertParecer(data['orientador'], 
+                              data['aluno'], 
+                              data['justificativa'], 
+                              data['desempenho'],
+                              data['EH_CCP'],
+                              data['resultado'])
+      print(parecer)
+      if parecer is True:
+            return jsonify(), 200
+      else:
+            return jsonify(), 200
 
 if __name__ == "__main__":
     app.run(debug=True)
