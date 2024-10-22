@@ -1,9 +1,11 @@
 from flask import Flask, jsonify, request
+#<<<<<<< HEAD
+#from back.model.user_model import *
+#=======
 from flask_cors import CORS
 from model.usuario_model import getLogin
-from model.aluno_model import getAlunosPorDocente, getAluno, query_aluno_dados
-from model.docente_model import getDocente
-from model.parecer_model import insertParecer
+from model.aluno_model import getAlunosPorDocente, query_aluno_dados, get
+from model.docente_model import getDocente, getProfessores, postDataMax
 import sys
 import os
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
@@ -190,6 +192,37 @@ def postParecer():
             return jsonify(), 200
       else:
             return jsonify(), 200
+
+
+@app.route('/api/professores', methods=['GET'])
+def professores():
+      docentes = getProfessores()
+
+      if docentes:
+            return jsonify(docentes), 200
+      else:
+            return jsonify({'message':'Not found'}), 404
+
+
+@app.route('/api/set+max+date', methods=['POST'])
+def dataMaxima():
+      if not request.is_json:
+            return jsonify({'erro': 'Request body must be JSON'}),400
+
+      data = request.get_json()
+
+      if 'dataMax' not in data:
+            return jsonify({'error': "Missing 'data máxima'"}),400
+
+      dataMX = data['dataMax']
+
+      updateResult = postDataMax(dataMX)
+
+      if updateResult == True:
+            return jsonify({'Status': updateResult}), 200
+      else:
+            return jsonify({"error": updateResult}), 400
+
 
 if __name__ == "__main__":
     app.run(debug=True)

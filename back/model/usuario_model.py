@@ -1,8 +1,24 @@
-from model.db_connection import get_db_connection
-from entities.usuario import Usuario
+#<<<<<<< HEAD:back/model/user_model.py
+#from back.model.db_connection import get_db_connection
+#from back.entities.user import User
+#=======
+from back.model.db_connection import get_db_connection
+from back.entities.usuario import Usuario
+#>>>>>>> 8fc11813b8207099db0bd3b80f75f000006d9d5d:back/model/usuario_model.py
 import base64
+from functools import wraps
 
-def getLogin(email,senha):
+def validaConnection(f):
+    @wraps(f)
+    def wrapper(*args, **kwargs):
+        conn = get_db_connection()
+        if conn is None:
+            print("Erro: Conexão com o banco de dados não estabelecida.")
+            return None
+        return f(conn, *args, **kwargs)
+    return wrapper
+
+def getLogin(email, senha):
     conn = get_db_connection()
     if conn is None:
         return None
@@ -27,4 +43,8 @@ def getLogin(email,senha):
             return Usuario(nusp=result[0], email=result[1], nivel=result[2], senha=senha)
 
     except Exception as e:
-        return e
+        return str(e)
+
+
+#=======
+#>>>>>>> 8fc11813b8207099db0bd3b80f75f000006d9d5d:back/model/usuario_model.py
