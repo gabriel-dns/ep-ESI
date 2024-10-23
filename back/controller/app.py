@@ -1,16 +1,23 @@
+import sys
+import os
+
 from flask import Flask, jsonify, request
 from flask_cors import CORS
+
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+
 from model.usuario_model import getLogin
 from model.aluno_model import getAlunosPorDocente, query_aluno_dados, getAluno
 from model.docente_model import getDocente, getProfessores, postDataMax
 from model.parecer_model import insertParecer
-import sys
-import os
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+from form_service.app import session
 
 
 app = Flask(__name__)
 CORS(app)
+
+#TODO: fazer com que seja um model convencional (utilizar a lib de conexão com db em model.db_connection) e criar model para relatório
+current_session = session.Session(app.route) #adiciona uma rota ('/add_responses') e cria uma conexão com o db (redundante)S
 
 @app.route('/api')
 def hello():
