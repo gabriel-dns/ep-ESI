@@ -1,3 +1,4 @@
+
 from flask import Flask, jsonify, request
 from flask_cors import CORS
 from model.usuario_model import getLogin
@@ -5,18 +6,31 @@ from model.aluno_model import getAlunosPorDocente, query_aluno_dados,query_email
 from model.docente_model import getDocente
 import sys
 import os
+
+from flask import Flask, jsonify, request
+from flask_cors import CORS
+
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
-#from entities import usuario
+
+from model.usuario_model import getLogin
+from model.aluno_model import getAlunosPorDocente, query_aluno_dados, getAluno
+from model.docente_model import getDocente, getProfessores, postDataMax
+from model.parecer_model import insertParecer
+from form_service.app import session
+
 
 app = Flask(__name__)
 CORS(app)
+
+#TODO: fazer com que seja um model convencional (utilizar a lib de conexão com db em model.db_connection) e criar model para relatório
+current_session = session.Session(app.route) #adiciona uma rota ('/add_responses') e cria uma conexão com o db (redundante)S
 
 @app.route('/api')
 def hello():
         return 'Hello World'
 
 
-@app.route('/api/login', methods=['POST'])
+@app.route('/api/login', methods=['GET'])
 def login():
       if not request.is_json:
             return jsonify({'erro': 'Request body must be JSON'}),400
@@ -78,7 +92,7 @@ def getAlunosDocente(nusp_docente):
         return jsonify({"message": "Erro interno do servidor"}), 500
       
 
-@app.route('/api/aluno/dados', methods=['POST'])
+@app.route('/api/aluno/dados', methods=['GET'])
 def get_aluno_dados():
     numero_usp = request.args.get('numero_usp')
 
@@ -175,6 +189,71 @@ def send_email():
 
       return f"Email has been sent!"    
       
+@app.route('/api/parecer', methods=['POST'])
+def postParecer():
+      if not request.is_json:
+            return jsonify({'message': 'Request body must be JSON'}),400
+      data = request.get_json()
+      if 'orientador' not in data:
+            return jsonify({'message': 'Bad Request. The field "orientador" is requerid'}),400
+      if 'aluno' not in data:
+            return jsonify({'message': 'Bad Request. The field "aluno" is requerid'}),400
+      if 'justificativa' not in data:
+            return jsonify({'message': 'Bad Request. The field "justificativa" is requerid'}),400
+      if 'desempenho' not in data:
+            return jsonify({'message': 'Bad Request. The field "desempenho" is requerid'}),400
+      if 'EH_CCP' not in data:
+            return jsonify({'message': 'Bad Request. The field "EH_CCP" is requerid'}),400
+      if 'resultado' not in data:
+            return jsonify({'message': 'Bad Request. The field "resultado" is requerid'}),400
+      
+      orientador = getDocente(data['orientador'])
+      if orientador is None:
+            return jsonify({"message": "Professor not found"}), 404
+      aluno = getAluno(data['aluno'])
+      if aluno is None:
+            return jsonify({"message": "Student not found"}), 404
+      parecer = insertParecer(data['orientador'], 
+                              data['aluno'], 
+                              data['justificativa'], 
+                              data['desempenho'],
+                              data['EH_CCP'],
+                              data['resultado'])
+      print(parecer)
+      if parecer is True:
+            return jsonify(), 200
+      else:
+            return jsonify(), 200
+
+
+@app.route('/api/professores', methods=['GET'])
+def professores():
+      docentes = getProfessores()
+
+      if docentes:
+            return jsonify(docentes), 200
+      else:
+            return jsonify({'message':'Not found'}), 404
+
+
+@app.route('/api/set+max+date', methods=['POST'])
+def dataMaxima():
+      if not request.is_json:
+            return jsonify({'erro': 'Request body must be JSON'}),400
+
+      data = request.get_json()
+
+      if 'dataMax' not in data:
+            return jsonify({'error': "Missing 'data máxima'"}),400
+
+      dataMX = data['dataMax']
+
+      updateResult = postDataMax(dataMX)
+
+      if updateResult == True:
+            return jsonify({'Status': updateResult}), 200
+      else:
+            return jsonify({"error": updateResult}), 400
 
 
 if __name__ == "__main__":

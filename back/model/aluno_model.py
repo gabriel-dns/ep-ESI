@@ -2,6 +2,36 @@ from model.db_connection import get_db_connection
 from entities.aluno import Aluno
 from psycopg2.extras import RealDictCursor
 
+
+def getAluno(nusp_aluno):
+    conn = get_db_connection()
+    if conn is None:
+        return None
+    
+    try:
+        cursor = conn.cursor()
+        query = "SELECT NUMERO_USP, NOME_COMPLETO, EMAIL, DATA_NASCIMENTO, LOCAL_NASCIMENTO, NACIONALIDADE, CURSO, ORIENTADOR, LINK_LATTES, DATA_MATRICULA, DATA_QUALIFICACAO, DATA_PROFICIENCIA, DATA_LIMITE_TRABALHO_FINAL  FROM ALUNO WHERE NUMERO_USP = '{}'".format(nusp_aluno)
+        cursor.execute(query)
+        result = cursor.fetchone()
+        cursor.close()
+        conn.close()
+        print(result)
+
+        if result is None:
+            return None
+        
+        if result:
+            Aluno(nusp=result[0], nome=result[1], email=result[2], data_nascimento=result[3], 
+                  local_nascimento=result[4], nacionalidade=result[5], curso=result[6], 
+                  orientador=result[7], link_lattes=result[8], data_matricula=result[9], 
+                  data_qualificado=result[10], data_proficiencia=result[11], 
+                  data_limite_trabalho_final=result[12])
+            return Aluno
+
+    except Exception as e:
+        print(f"Erro ao buscar aluno {nusp_aluno}: {e}")
+        return e
+
 def getAlunosPorDocente(nusp_docente):
     conn = get_db_connection()
     if conn is None:
@@ -29,7 +59,6 @@ def getAlunosPorDocente(nusp_docente):
                   data_limite_trabalho_final=row[12]) 
             for row in result
         ]
-            print(lista_alunos)
         return lista_alunos
     
     except Exception as e:
