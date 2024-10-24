@@ -17,6 +17,7 @@ const headerProps = {
 const initialState = {
     user: { name: '', email: '' },
     list: [],
+    avaliacao: null,
     dados: {
 
    
@@ -62,7 +63,7 @@ const initialState = {
         dataProficiencia: null, 
         dataLimiteTrabalhoFinal: null 
     }
-}
+    }
 };
 
 
@@ -75,18 +76,38 @@ export default class Relatorio extends Component {
         util.autenticacao()
         const urlParams = new URLSearchParams(window.location.search);
         const numeroUsp = urlParams.get('numerousp');
+
         var response = await academicServices.getdadosAlunos(numeroUsp);
+        console.log("Retorno:")
+        console.log(response)
+         this.setState({ dados: response })
+        // console.log("numeroUsp:")
+        // console.log(this.state.dados.aluno.numeroUsp)
 
-        this.setState({ dados: response })
-
-
+        if(numeroUsp != null){
+            this.setState({ avaliacao: this.blocoAvaliacao() })
+        }
 
 
         //console.log("PAGINA RELATORIO numeroUsp: " + numeroUsp)
 
 
+    }
 
-        //window.location.href = "/";
+     blocoAvaliacao(){
+
+        return (
+            <div className='blocoInformacao'>
+            <h2>Avaliacao</h2>
+            <label>Forms de avaliação: </label><br />
+            <button className="btn btn-warning">
+            <a href="https://docs.google.com/forms/d/19pdOvoet4vFr8dyI4A51QZ-CWtJHeCKKDUGpIR8JF5I/viewform?edit_requested=true" target="_blank">
+                        <i className="fa fa-envelope"></i>
+            </a>
+                    </button>
+            </div>
+        )
+
     }
 
     renderTable() {
@@ -148,9 +169,10 @@ export default class Relatorio extends Component {
                 <label>Desempenho:  <spam>{parecer.desempenho}</spam></label><br />
                 <label>Resultado:  <spam>{parecer.resultado}</spam></label><br />
                 </div>
-                <div className='blocoInformacao'>
-                <h2>Avaliacao</h2>
-                </div>
+
+                {
+                    this.state.avaliacao
+                }
 
             </div>
         );

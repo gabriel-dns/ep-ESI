@@ -31,7 +31,8 @@ export default class Alunos extends Component {
         const numeroUspOrientador = urlParams.get('numerousp');
         
         var  alunosResponse = await academicServices.getAlunos(numeroUspOrientador)
-        console.log("Lista de Alunos" + alunosResponse)
+        console.log("Lista de Alunos" )
+        console.log(alunosResponse)
         this.setState({ list: alunosResponse })
     }
 

@@ -1,3 +1,9 @@
+
+from flask import Flask, jsonify, request
+from flask_cors import CORS
+from model.usuario_model import getLogin
+from model.aluno_model import getAlunosPorDocente, query_aluno_dados,query_email_alunos
+from model.docente_model import getDocente
 import sys
 import os
 
@@ -89,6 +95,8 @@ def getAlunosDocente(nusp_docente):
 @app.route('/api/aluno/dados', methods=['GET'])
 def get_aluno_dados():
     numero_usp = request.args.get('numero_usp')
+
+    print(numero_usp)
     if not numero_usp:
         return jsonify({"error": "NUMERO_USP is required"}), 400
 
@@ -146,17 +154,36 @@ def get_aluno_dados():
 
     return jsonify({"dados": dados})
 
+@app.route('/api/alunos/email', methods=['POST'])
+def get_alunos_email():
+
+    query_result = query_email_alunos()
+    print(query_result)
+
+    if not query_result:
+        return jsonify({"error": "Aluno not found"}), 404
+    
+    return query_result
+
 @app.route('/api/send_report_email', methods=['POST'])
 def send_email():
       data = request.get_json()
-      sender = data['sender']
+
+
+
+      sender = "esi.code.proj@gmail.com"
+
+
+      print("bate aqui")
       subject = data['subject']
-      recipients = data['recipients']
-      message = data['message']
+      recipients = query_email_alunos()
       deadline = data['deadline']
       link = "https://docs.google.com/forms/d/e/1FAIpQLSeawsatuMAXsM-_qjnpl8jl1optdKuf1RFqK_pv5giadxYXaw/viewform?usp=sf_link"
+      print(subject)
+      print(recipients)
+      print(deadline)
 
-      from back import envia_email
+      import envia_email
 
       envia_email.Email.envia_email(subject, sender, recipients, deadline, link)
 

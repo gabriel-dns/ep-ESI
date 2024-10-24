@@ -33,6 +33,7 @@ export default class AcademicServices {
     return dadosAluno
   }
 
+
   async getOrientadores(){
 
     const {data} = await api.get('/orientadores')
@@ -54,20 +55,30 @@ export default class AcademicServices {
       aluno = localStorage.getItem("numeroUsp")
     }
 
-    const {data} = await api.get('/dados', numeroUsp)
-    console.log("getdadosAlunos dados retorno: ")
+    const {data} = await api.post('/aluno/dados?numero_usp=' + numeroUsp)
+    console.log("get dadosAlunos dados retorno: ")
     console.log(data)
 
-    return data
+    return data.dados
   
   }
   async cadastrarDataMaxima(dataMaxima){
 
-    const {data} = await api.post('/cadastrarDataMaxima', dataMaxima)
-    return data
+    var dadosEmail = {
+      "subject": "Prazo de entrega de relatorio Definido!",
+      "deadline": dataMaxima 
+    }
+
+    const {data} = await api.post('/send_report_email', dadosEmail)
+    console.log("dados retorno: ")
+    console.log(data)
+
+    
+  
+    // const {data} = await api.post('/cadastrarDataMaxima', dataMaxima)
+    // return data
   
   }
-
 
 
 }
