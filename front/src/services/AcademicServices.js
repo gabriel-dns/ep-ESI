@@ -14,10 +14,10 @@ export default class AcademicServices {
       orientador = localStorage.getItem("numeroUsp")
     }
     console.log('NUMERO USP ORIENTADO: '+orientador)
-    
+
     const {data} = await api.get('/'+orientador+'/alunos', orientador)
     var dadosAluno =  []
-    
+
     console.log("dados retorno: ")
     console.log(data)
 
@@ -26,7 +26,7 @@ export default class AcademicServices {
         "nome": alu.nome,
         "numeroUsp": alu.nusp
       })
-      
+
     })
 
 
@@ -35,12 +35,12 @@ export default class AcademicServices {
 
   async getOrientadores(){
 
-    const {data} = await api.get('/orientadores')
+    const {data} = await api.get('/professores')
     console.log("dados retorno: ")
     console.log(data)
 
     return data
-  
+
   }
   async getdadosAlunos(numeroUsp){
 
@@ -54,20 +54,43 @@ export default class AcademicServices {
       aluno = localStorage.getItem("numeroUsp")
     }
 
-    const {data} = await api.get('/dados', numeroUsp)
-    console.log("getdadosAlunos dados retorno: ")
+    const {data} = await api.post('/aluno/dados?numero_usp=' + numeroUsp)
+    console.log("get dadosAlunos dados retorno: ")
     console.log(data)
 
-    return data
-  
+    return data.dados
+
   }
   async cadastrarDataMaxima(dataMaxima){
 
-    const {data} = await api.post('/cadastrarDataMaxima', dataMaxima)
-    return data
-  
-  }
+    var dadosEmail = {
+      "subject": "Prazo de entrega de relatorio Definido!",
+      "deadline": dataMaxima 
+    }
+    const {data} = await api.post('/send_report_email', dadosEmail)
+    console.log("dados retorno: ")
+    console.log(data)
 
+    const {data2} = await api.post('/cadastrar/dataMaxima', dadosEmail)
+    console.log("dados retorno: ")
+    console.log(data2)
+    
+
+  }
+  async atribuir(dados){
+
+    var request = {
+      "aluno": dados.numeroUSP_aluno,
+      "orientador": dados.orientador 
+    }
+    console.log("Request")
+    console.log(request)
+    const {data} = await api.post('/atribuir', request)
+    console.log("dados retorno: ")
+    console.log(data)
+
+
+  }
 
 
 }

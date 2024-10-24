@@ -32,6 +32,7 @@ export default class Alunos extends Component {
         
         var  alunosResponse = await academicServices.getAlunos(numeroUspOrientador)
         console.log("Lista de Alunos" + alunosResponse)
+        console.log(alunosResponse)
         this.setState({ list: alunosResponse })
     }
 
@@ -73,7 +74,7 @@ export default class Alunos extends Component {
             return (
                 <tr key={user.numeroUsp}>
                     <td>{user.numeroUsp}</td>
-                    <td>{user.name}</td>
+                    <td>{user.nome}</td>
                 {/* <td> <img style={styles}  src={curriculo}/>  </td> */}
                     <td>
                         <button className="btn btn-warning"

@@ -1,6 +1,7 @@
 from model.db_connection import get_db_connection
 from entities.docente import Docente
 
+
 def getDocente(nusp_docente):
     conn = get_db_connection()
     if conn is None:
@@ -33,10 +34,12 @@ def getProfessores():
     try:
         cursor = conn.cursor()
 
-        query = '''SELECT * FROM DOCENTE'''
+        query = "SELECT numero_usp, nome FROM DOCENTE"
         cursor.execute(query)
 
+
         resultRows = cursor.fetchall()
+        print(resultRows)
 
         cursor.close()
         conn.close()
@@ -46,8 +49,8 @@ def getProfessores():
         if resultRows is not None:
             for row in resultRows:
                 docentes.append({
-                    'nusp': row[0],
-                    'nome-professor': row[1]
+                    'numeroUsp': row[0],
+                    'name': row[1]
                 })
 
         return docentes
@@ -65,6 +68,28 @@ def postDataMax(dataMax):
         cursor = conn.cursor()
 
         query = f"UPDATE ALUNO SET data_limite_trabalho_final = '{dataMax}';"
+        cursor.execute(query)
+
+        result = True if cursor.rowcount > 0 else False
+
+        conn.commit()
+        cursor.close()
+        conn.close()
+
+        return result
+
+    except Exception as e:
+        return str(e)
+    
+def atribuir(aluno, orientador):
+    conn = get_db_connection()
+    if conn is None:
+        return None
+
+    try:
+        cursor = conn.cursor()
+
+        query = f"UPDATE ALUNO SET orientador = '{orientador}' where numero_usp = '{aluno}';"
         cursor.execute(query)
 
         result = True if cursor.rowcount > 0 else False

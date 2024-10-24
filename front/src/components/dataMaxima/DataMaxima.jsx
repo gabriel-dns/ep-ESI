@@ -32,13 +32,10 @@ export default class DataMaxima extends Component {
     }
 
     cadastrarData(dataMaxima){
-       var response = academicServices.cadastrarDataMaxima();
-
-       if(response.sucesso){
-        alert('Data cadastrada com sucesso')
-       }else{
-        alert('Erro ao cadastrar')
-       }
+        console.log(this.state.dados.dataMaxima)
+        var response = academicServices.cadastrarDataMaxima(this.state.dados.dataMaxima);
+ 
+        alert("Data maxima de entrega cadastrada com sucesso! todos os alunos foram notificados")
       
     }
 
@@ -73,7 +70,7 @@ export default class DataMaxima extends Component {
                 <div className="row">
                     <div className="col-12 d-flex justify-content-end">
                         <button className="btn btn-primary"
-                            onClick={e => this.cadastrarData(e)}>
+                           onClick={() => this.cadastrarData()}>
                             Cadastrar
                         </button>
                         <button className="btn btn-secondary ml-2"

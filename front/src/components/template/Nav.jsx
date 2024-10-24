@@ -124,6 +124,9 @@ const navCCP = () => {
             <Link to="/datamaxima">
               Cadastro Data Maxima
             </Link>
+            <Link to="/atribuir">
+              Atribuir Orientadores
+            </Link>
             
             <b className="logout" onClick={() => encerrarSessao()}>
              Sair

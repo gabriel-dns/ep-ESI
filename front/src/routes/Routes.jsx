@@ -5,6 +5,7 @@ import Relatorio from '../components/relatorio/RelatorioPage'
 import DataMaxima from '../components/dataMaxima/DataMaxima'
 import Alunos from '../components/alunos/alunos'
 import Orientadores from '../components/orientadores/orientadores'
+import AtribuirOrientadores from '../components/AtribuirOrientadores/AtribuirOrientadores'
 import Login from '../components/login/loginPage'
 import UserServices from '../services/UserService';
 
@@ -20,6 +21,7 @@ const Routes = () => (
         <Route path='/orientadores' component={Orientadores} />
         <Route path='/login' component={Login} />
         <Route path='/datamaxima' component={DataMaxima} />
+        <Route path='/atribuir' component={AtribuirOrientadores} />
         <Redirect from='*' to='/' />
     </Switch>
 );

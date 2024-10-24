@@ -10,12 +10,11 @@ const academicServices = new AcademicServices()
 
 const headerProps = {
     icon: '',
-    title: 'Alunos',
-    subtitle: 'Tela de Listagem de alunos'
+    title: 'Orientadores',
+    subtitle: 'Tela de Listagem de Orientadores'
 }
 
 const initialState = {
-    user: { name: '', email: '' },
     list: []
 }
 
@@ -63,18 +62,18 @@ export default class Orientadores extends Component {
     }
 
     renderRows() {
-        return this.state.list.map(user => {
+        return this.state.list.map(dados => {
             let styles = {
                 width: '35px'
               };
             return (
-                <tr key={user.numeroUsp}>
-                    <td>{user.numeroUsp}</td>
-                    <td>{user.name}</td>
+                <tr key={dados.numeroUsp}>
+                    <td>{dados.numeroUsp}</td>
+                    <td>{dados.name}</td>
                 {/* <td> <img style={styles}  src={curriculo}/>  </td> */}
                     <td>
                         <button className="btn btn-warning"
-                            onClick={() => this.consultarAlunos(user.numeroUsp)}>
+                            onClick={() => this.consultarAlunos(dados.numeroUsp)}>
                             <i className="fa fa-pencil"></i>
                         </button>
                     </td>

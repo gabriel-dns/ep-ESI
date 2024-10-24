@@ -1,9 +1,9 @@
 from flask import Flask, jsonify, request
 from flask_cors import CORS
 from model.usuario_model import getLogin
-from model.aluno_model import getAlunosPorDocente, query_aluno_dados, getAluno
-from model.docente_model import getDocente, getProfessores, postDataMax
-from model.parecer_model import insertParecer
+from model.aluno_model import getAlunosPorDocente, query_aluno_dados,query_email_alunos
+from model.docente_model import getDocente, getProfessores, postDataMax, atribuir
+from datetime import datetime
 import sys
 import os
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
@@ -17,7 +17,7 @@ def hello():
         return 'Hello World'
 
 
-@app.route('/api/login', methods=['GET'])
+@app.route('/api/login', methods=['POST'])
 def login():
       if not request.is_json:
             return jsonify({'erro': 'Request body must be JSON'}),400
@@ -79,7 +79,7 @@ def getAlunosDocente(nusp_docente):
         return jsonify({"message": "Erro interno do servidor"}), 500
       
 
-@app.route('/api/aluno/dados', methods=['GET'])
+@app.route('/api/aluno/dados', methods=['POST'])
 def get_aluno_dados():
     numero_usp = request.args.get('numero_usp')
     if not numero_usp:
@@ -139,21 +139,37 @@ def get_aluno_dados():
 
     return jsonify({"dados": dados})
 
+
+
+
+@app.route('/api/alunos/email', methods=['POST'])
+def get_alunos_email():
+    query_result = query_email_alunos()
+    print(query_result)
+    if not query_result:
+        return jsonify({"error": "Aluno not found"}), 404
+    
+    return query_result
+
 @app.route('/api/send_report_email', methods=['POST'])
 def send_email():
       data = request.get_json()
-      sender = data['sender']
+      sender = "esi.code.proj@gmail.com"
+      print("bate aqui")
       subject = data['subject']
-      recipients = data['recipients']
-      message = data['message']
+      recipients = query_email_alunos()
       deadline = data['deadline']
       link = "https://docs.google.com/forms/d/e/1FAIpQLSeawsatuMAXsM-_qjnpl8jl1optdKuf1RFqK_pv5giadxYXaw/viewform?usp=sf_link"
+      print(subject)
+      print(recipients)
+      print(deadline)
 
-      from back import envia_email
+      import envia_email
 
-      envia_email.Email.envia_email(subject, sender, recipients, deadline, link)
+      
 
-      return f"Email has been sent!"    
+      envia_email.Email.envia_email(subject, sender, recipients, deadline, link)  
+      return jsonify(), 200
       
 @app.route('/api/parecer', methods=['POST'])
 def postParecer():
@@ -202,24 +218,37 @@ def professores():
             return jsonify({'message':'Not found'}), 404
 
 
-@app.route('/api/set+max+date', methods=['POST'])
+@app.route('/api/cadastrar/dataMaxima', methods=['POST'])
 def dataMaxima():
       if not request.is_json:
             return jsonify({'erro': 'Request body must be JSON'}),400
 
       data = request.get_json()
 
-      if 'dataMax' not in data:
-            return jsonify({'error': "Missing 'data máxima'"}),400
-
-      dataMX = data['dataMax']
-
+      dataMX = data['deadline']
+      print(dataMX)
       updateResult = postDataMax(dataMX)
 
       if updateResult == True:
             return jsonify({'Status': updateResult}), 200
       else:
             return jsonify({"error": updateResult}), 400
+      
+@app.route('/api/atribuir', methods=['POST'])
+def atribuirOrientador():
+      if not request.is_json:
+            return jsonify({'erro': 'Request body must be JSON'}),400
+
+      data = request.get_json()
+
+      aluno = data['aluno']
+      orientador = data['orientador']
+      print(aluno)
+      print(orientador)
+      updateResult = atribuir(aluno, orientador)
+
+      return jsonify({"result": updateResult}), 200
+      return jsonify(), 200
 
 
 if __name__ == "__main__":

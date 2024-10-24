@@ -104,3 +104,17 @@ def query_aluno_dados(numero_usp):
     finally:
         cursor.close()
         conn.close()
+
+
+
+def query_email_alunos():
+    conn = get_db_connection()
+    cursor = conn.cursor(cursor_factory=RealDictCursor)
+    try:
+        # Query for aluno data
+        cursor.execute("SELECT email FROM ALUNO")
+        emails = cursor.fetchall()
+        return [item['email'] for item in emails]
+    finally:
+        cursor.close()
+        conn.close()
