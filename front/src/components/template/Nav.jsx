@@ -127,6 +127,9 @@ const navCCP = () => {
             <Link to="/atribuir">
               Atribuir Orientadores
             </Link>
+            <Link to="/cadastro">
+              Cadastrar Usuarios
+            </Link>
             
             <b className="logout" onClick={() => encerrarSessao()}>
              Sair

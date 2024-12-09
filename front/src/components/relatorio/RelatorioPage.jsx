@@ -75,18 +75,25 @@ export default class Relatorio extends Component {
     async componentWillMount() {
         util.autenticacao()
         const urlParams = new URLSearchParams(window.location.search);
-        const numeroUsp = urlParams.get('numerousp');
+
+        var numeroUsp = urlParams.get('numerousp');
+        if(numeroUsp == null) numeroUsp = localStorage.getItem("numeroUsp")
+
+        console.log("--------------------------")
+        console.log(numeroUsp)
         var response = await academicServices.getdadosAlunos(numeroUsp);
 
         this.setState({ dados: response })
 
 
-        if(numeroUsp != null){
+        if(urlParams.get('numerousp') != null){
             this.setState({ avaliacao: this.blocoAvaliacao() })
+        }else if(this.state.dados.parecer.desempenho == 'Insuficiente'){
+
+            this.setState({ avaliacao: this.formsAluno() })
         }
 
-        //console.log("PAGINA RELATORIO numeroUsp: " + numeroUsp)
-        //window.location.href = "/";
+
     }
 
     blocoAvaliacao(){
@@ -97,6 +104,21 @@ export default class Relatorio extends Component {
             <label>Forms de avaliação: </label><br />
             <button className="btn btn-warning">
             <a href="https://docs.google.com/forms/d/19pdOvoet4vFr8dyI4A51QZ-CWtJHeCKKDUGpIR8JF5I/viewform?edit_requested=true" target="_blank">
+                        <i className="fa fa-envelope"></i>
+            </a>
+                    </button>
+            </div>
+        )
+
+    }
+    formsAluno(){
+
+        return (
+            <div className='blocoInformacao'>
+            <h2>Relatorio</h2>
+            <label>Voce esta elegivel para entregar um novo relatorio final: </label><br />
+            <button className="btn btn-warning">
+            <a href="https://docs.google.com/forms/d/e/1FAIpQLSeawsatuMAXsM-_qjnpl8jl1optdKuf1RFqK_pv5giadxYXaw/viewform" target="_blank">
                         <i className="fa fa-envelope"></i>
             </a>
                     </button>

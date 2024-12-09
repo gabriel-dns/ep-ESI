@@ -77,6 +77,24 @@ export default class AcademicServices {
     
 
   }
+  async cadastrarUsuario(numeroUsp, email,senha,nivel){
+
+    var dadoscadastro = {
+      "numerousp": numeroUsp,
+      "email": email, 
+      "senha": senha, 
+      "nivel": nivel, 
+    }
+
+    console.log("testes -- ")
+    console.log(dadoscadastro)
+
+    const {data2} = await api.post('/usuarios', dadoscadastro)
+    console.log("dados retorno: ")
+    console.log(data2)
+    
+
+  }
   async atribuir(dados){
 
     var request = {

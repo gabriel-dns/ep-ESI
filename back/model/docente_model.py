@@ -81,6 +81,29 @@ def postDataMax(dataMax):
     except Exception as e:
         return str(e)
     
+
+def postCadastrarUsuarios(numeroUsp,email,senha,nivel):
+    conn = get_db_connection()
+    if conn is None:
+        return None
+
+
+    try:
+        cursor = conn.cursor()
+        query = f"INSERT INTO USUARIOS (NUMERO_USP, EMAIL, SENHA, NIVEL) VALUES ('{numeroUsp}', '{email}', '{senha}', '{nivel}'); "
+        cursor.execute(query)
+
+        result = True if cursor.rowcount > 0 else False
+
+        conn.commit()
+        cursor.close()
+        conn.close()
+
+        return result
+
+    except Exception as e:
+        return str(e)
+    
 def atribuir(aluno, orientador):
     conn = get_db_connection()
     if conn is None:

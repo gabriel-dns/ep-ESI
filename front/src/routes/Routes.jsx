@@ -3,6 +3,7 @@ import { Switch, Route, Redirect } from 'react-router'
 import Home from '../components/home/Home'
 import Relatorio from '../components/relatorio/RelatorioPage'
 import DataMaxima from '../components/dataMaxima/DataMaxima'
+import Cadastro from '../components/cadastroUsuarios/CadastroUsuarios'
 import Alunos from '../components/alunos/alunos'
 import Orientadores from '../components/orientadores/orientadores'
 import AtribuirOrientadores from '../components/AtribuirOrientadores/AtribuirOrientadores'
@@ -22,6 +23,7 @@ const Routes = () => (
         <Route path='/login' component={Login} />
         <Route path='/datamaxima' component={DataMaxima} />
         <Route path='/atribuir' component={AtribuirOrientadores} />
+        <Route path='/cadastro' component={Cadastro} />
         <Redirect from='*' to='/' />
     </Switch>
 );

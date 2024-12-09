@@ -2,7 +2,7 @@ from flask import Flask, jsonify, request
 from flask_cors import CORS
 from model.usuario_model import getLogin
 from model.aluno_model import getAlunosPorDocente, query_aluno_dados,query_email_alunos
-from model.docente_model import getDocente, getProfessores, postDataMax, atribuir
+from model.docente_model import getDocente, getProfessores, postDataMax, atribuir,postCadastrarUsuarios
 from datetime import datetime
 import sys
 import os
@@ -84,6 +84,9 @@ def get_aluno_dados():
     numero_usp = request.args.get('numero_usp')
     if not numero_usp:
         return jsonify({"error": "NUMERO_USP is required"}), 400
+    
+    print("--------------------------TESTE ---------------------------")
+    print(numero_usp)
 
     query_result = query_aluno_dados(numero_usp)
 
@@ -233,7 +236,11 @@ def dataMaxima():
             return jsonify({'Status': updateResult}), 200
       else:
             return jsonify({"error": updateResult}), 400
-      
+
+
+
+
+
 @app.route('/api/atribuir', methods=['POST'])
 def atribuirOrientador():
       if not request.is_json:
@@ -249,6 +256,31 @@ def atribuirOrientador():
 
       return jsonify({"result": updateResult}), 200
       return jsonify(), 200
+
+
+@app.route('/api/usuarios', methods=['POST'])
+def usuarios():
+      if not request.is_json:
+            return jsonify({'erro': 'Request body must be JSON'}),400
+
+      data = request.get_json()
+
+      numeroUsp = data['numerousp']
+      print(numeroUsp)
+      email = data['email']
+      print(email)
+      senha = data['senha']
+      print(senha)
+      nivel = data['nivel']
+      print(nivel)
+      updateResult = postCadastrarUsuarios(numeroUsp, email,senha,nivel)
+
+      if updateResult == True:
+            return jsonify({'Status': updateResult}), 200
+      else:
+            return jsonify({"error": updateResult}), 400
+
+
 
 
 if __name__ == "__main__":
